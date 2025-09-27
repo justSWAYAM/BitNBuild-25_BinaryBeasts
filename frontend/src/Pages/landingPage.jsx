@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { ChevronDown, Users, Shield, MessageCircle, Star, Code, Palette, PenTool, BookOpen, ArrowRight, Menu, X, CheckCircle, Zap, Globe, Play, Sparkles, TrendingUp, Target, Lightbulb, RotateCcw, Trophy, User, Clock, Award } from 'lucide-react';
+import AuthModal from '../Components/AuthModal';
 
 const GigCampusLanding = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeFeature, setActiveFeature] = useState(0);
+  const [showAuthModal, setShowAuthModal] = useState(false);
+  const [authMode, setAuthMode] = useState('signin'); // 'signin' or 'signup'
 
   const features = [
     {
@@ -65,7 +68,13 @@ const GigCampusLanding = () => {
                 <button className="w-8 h-8 bg-slate-800 rounded-lg flex items-center justify-center hover:bg-slate-700 transition-colors">
                   <div className="w-4 h-4 bg-slate-500 rounded-full"></div>
                 </button>
-                <button className="bg-white text-slate-900 px-4 py-2 rounded-lg font-medium hover:bg-gray-100 transition-colors">
+                <button 
+                  onClick={() => {
+                    setAuthMode('signin');
+                    setShowAuthModal(true);
+                  }}
+                  className="bg-white text-slate-900 px-4 py-2 rounded-lg font-medium hover:bg-gray-100 transition-colors"
+                >
                   Sign In
                 </button>
               </div>
@@ -99,13 +108,25 @@ const GigCampusLanding = () => {
                 </div>
                 
                 <div className="flex flex-col sm:flex-row gap-4">
-                  <button className="bg-emerald-500 hover:bg-emerald-600 px-8 py-4 rounded-xl font-semibold text-lg transition-colors text-white">
+                  <button 
+                    onClick={() => {
+                      setAuthMode('signup');
+                      setShowAuthModal(true);
+                    }}
+                    className="bg-emerald-500 hover:bg-emerald-600 px-8 py-4 rounded-xl font-semibold text-lg transition-colors text-white"
+                  >
                     Start Now
                   </button>
                   <button className="text-slate-300 hover:text-white px-8 py-4 rounded-xl font-semibold text-lg transition-colors">
                     Learn More
                   </button>
-                  <button className="bg-slate-800 hover:bg-slate-700 px-8 py-4 rounded-xl font-semibold text-lg transition-colors text-white">
+                  <button 
+                    onClick={() => {
+                      setAuthMode('signup');
+                      setShowAuthModal(true);
+                    }}
+                    className="bg-slate-800 hover:bg-slate-700 px-8 py-4 rounded-xl font-semibold text-lg transition-colors text-white"
+                  >
                     Get Started
                   </button>
                 </div>
@@ -315,7 +336,13 @@ const GigCampusLanding = () => {
                   Get started with all essential features included. Premium tools and advanced analytics coming soon.
                 </p>
                 
-                <button className="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-4 px-8 rounded-xl text-lg transition-colors mb-6">
+                <button 
+                  onClick={() => {
+                    setAuthMode('signup');
+                    setShowAuthModal(true);
+                  }}
+                  className="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-4 px-8 rounded-xl text-lg transition-colors mb-6"
+                >
                   Sign Up
                 </button>
                 
@@ -354,6 +381,14 @@ const GigCampusLanding = () => {
           </div>
         </div>
       </footer>
+
+      {/* Auth Modal */}
+      <AuthModal 
+        isOpen={showAuthModal}
+        onClose={() => setShowAuthModal(false)}
+        mode={authMode}
+        onModeChange={setAuthMode}
+      />
     </div>
   );
 };

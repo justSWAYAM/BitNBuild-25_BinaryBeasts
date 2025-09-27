@@ -1,13 +1,14 @@
 
 import './App.css'
-import GigCampusLanding from './Pages/landingPage'
+import LandingPage from './Pages/landingPage'
+
 
 function App() {
 
   return (
     <>
     <div>
-      <GigCampusLanding/>
+      <LandingPage/>
     </div>
 
     </>
