@@ -17,7 +17,7 @@ function App() {
           <Route path={routes.HOME} element={<GigCampusLanding />} />
           
           {/* Marketplace/Job Listings */}
-          <Route path={routes.MARKETPLACE} element={<JobListings />} />
+          <Route path= "marketplace" element={<JobListings />} />
           
           {/* Chat Page */}
           <Route path={routes.CHAT} element={<ChatPage />} />

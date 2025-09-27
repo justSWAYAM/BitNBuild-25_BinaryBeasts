@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { X, Eye, EyeOff } from "lucide-react";
 import { auth, db } from "../config/firebase";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import { doc, setDoc, getDoc } from "firebase/firestore";
+import { doc, setDoc, getDoc, Timestamp } from "firebase/firestore";
+import { useNavigate } from 'react-router-dom';
 
 const AuthModal = ({ isOpen, onClose, mode, onModeChange }) => {
   const [showPassword, setShowPassword] = useState(false);
@@ -10,6 +11,7 @@ const AuthModal = ({ isOpen, onClose, mode, onModeChange }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showRolePrompt, setShowRolePrompt] = useState(false); // For Google first login
+  const navigate = useNavigate();
 
   if (!isOpen) return null;
 
@@ -34,30 +36,166 @@ const AuthModal = ({ isOpen, onClose, mode, onModeChange }) => {
 
   const handleGoogleRoleSelect = async (selectedRole) => {
     const user = auth.currentUser;
-    if (!user) return;
+    if (!user) {
+      console.error("No user found");
+      return;
+    }
 
-    await setDoc(doc(db, "users", user.uid), {
-      email: user.email,
-      role: selectedRole,
-      provider: "google",
-    });
-    setShowRolePrompt(false);
-    onClose();
+    try {
+      console.log("Creating Google user with role:", selectedRole); // Debug log
+
+      // Create base user document
+      const userDoc = {
+        email: user.email,
+        type: selectedRole,
+        provider: "google",
+        createdAt: Timestamp.now(),
+        updatedAt: Timestamp.now(),
+      };
+
+      await setDoc(doc(db, "users", user.uid), userDoc);
+      console.log("User document created successfully"); // Debug log
+
+      if (selectedRole === "freelancer") {
+        console.log("Creating freelancer document for Google user..."); // Debug log
+        
+        const freelancerDoc = {
+          userId: user.uid,
+          rating: 0,
+          totalRatings: 0,
+          available: true,
+          skills: [],
+          reviews: [],
+          pastWorks: [],
+          completedJobs: 0,
+          hourlyRate: 0,
+          bio: "",
+          createdAt: Timestamp.now(),
+          updatedAt: Timestamp.now()
+        };
+
+        await setDoc(doc(db, "freelancers", user.uid), freelancerDoc);
+        console.log("Freelancer document created successfully"); // Debug log
+        navigate("/marketplace");
+      } else if (selectedRole === "client") {
+        console.log("Creating client document for Google user..."); // Debug log
+        
+        const clientDoc = {
+          userId: user.uid,
+          rating: 0,
+          totalRatings: 0,
+          lastPostedDate: null,
+          totalPostings: 0,
+          activePostings: [],
+          completedPostings: [],
+          reviews: [],
+          createdAt: Timestamp.now(),
+          updatedAt: Timestamp.now()
+        };
+
+        await setDoc(doc(db, "clients", user.uid), clientDoc);
+        console.log("Client document created successfully"); // Debug log
+        navigate("/dashboard");
+      }
+
+      setShowRolePrompt(false);
+      onClose();
+    } catch (error) {
+      console.error("Profile setup error:", error); // More detailed error logging
+      alert(`Error setting up profile: ${error.message}`);
+    }
   };
 
   const handleEmailAuth = async () => {
     try {
       if (mode === "signin") {
-        await signInWithEmailAndPassword(auth, email, password);
-      } else {
-        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-        if (role) {
-          await setDoc(doc(db, "users", userCredential.user.uid), { role });
+        // Sign in logic remains the same
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        const userDoc = await getDoc(doc(db, "users", userCredential.user.uid));
+        const userType = userDoc.data()?.type;
+        
+        if (userType === "freelancer") {
+          navigate("/marketplace");
+        } else if (userType === "client") {
+          navigate("/dashboard");
         }
+        onClose();
+      } else {
+        // Sign up logic with better error handling
+        if (!role) {
+          alert("Please select a role (Client or Freelancer)");
+          return;
+        }
+
+        if (!email || !password) {
+          alert("Please fill in all fields");
+          return;
+        }
+
+        console.log("Creating new user with role:", role); // Debug log
+
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const uid = userCredential.user.uid;
+
+        // Create user document first
+        const userDoc = {
+          email: email,
+          type: role,
+          createdAt: Timestamp.now(),
+          updatedAt: Timestamp.now(),
+        };
+
+        console.log("Creating user document..."); // Debug log
+        await setDoc(doc(db, "users", uid), userDoc);
+
+        // Create role-specific document
+        if (role === "freelancer") {
+          console.log("Creating freelancer document..."); // Debug log
+          
+          const freelancerDoc = {
+            userId: uid,
+            rating: 0,
+            totalRatings: 0,
+            available: true,
+            skills: [],
+            reviews: [],
+            pastWorks: [],
+            completedJobs: 0,
+            hourlyRate: 0,
+            bio: "",
+            createdAt: Timestamp.now(),
+            updatedAt: Timestamp.now()
+          };
+
+          await setDoc(doc(db, "freelancers", uid), freelancerDoc);
+          console.log("Freelancer document created successfully"); // Debug log
+          navigate("/marketplace");
+        } else if (role === "client") {
+          console.log("Creating client document..."); // Debug log
+          
+          const clientDoc = {
+            userId: uid,
+            rating: 0,
+            totalRatings: 0,
+            lastPostedDate: null,
+            totalPostings: 0,
+            activePostings: [],
+            completedPostings: [],
+            reviews: [],
+            createdAt: Timestamp.now(),
+            updatedAt: Timestamp.now()
+          };
+
+          await setDoc(doc(db, "clients", uid), clientDoc);
+          console.log("Client document created successfully"); // Debug log
+          navigate("/dashboard");
+        }
+
+        onClose();
       }
-      onClose();
     } catch (error) {
-      console.error("Email auth error:", error);
+      console.error("Auth error:", error); // More detailed error logging
+      alert(`Authentication error: ${error.message}`);
     }
   };
 
@@ -114,10 +252,10 @@ const AuthModal = ({ isOpen, onClose, mode, onModeChange }) => {
                 {mode === "signup" && (
                   <div className="flex justify-between text-sm mb-2">
                     <button
-                      onClick={() => setRole("student")}
-                      className={`w-1/2 mr-2 py-2 rounded-xl ${role === "student" ? "bg-emerald-500" : "bg-slate-800/50"} text-white font-medium transition-colors`}
+                      onClick={() => setRole("client")}
+                      className={`w-1/2 mr-2 py-2 rounded-xl ${role === "client" ? "bg-emerald-500" : "bg-slate-800/50"} text-white font-medium transition-colors`}
                     >
-                      Student
+                      Client
                     </button>
                     <button
                       onClick={() => setRole("freelancer")}
@@ -178,10 +316,10 @@ const AuthModal = ({ isOpen, onClose, mode, onModeChange }) => {
                 <p className="text-slate-400 text-center mb-2">Select your role to continue</p>
                 <div className="flex justify-between">
                   <button
-                    onClick={() => handleGoogleRoleSelect("student")}
+                    onClick={() => handleGoogleRoleSelect("client")}
                     className="w-1/2 mr-2 py-2 rounded-xl bg-emerald-500 text-white font-medium"
                   >
-                    Student
+                    Client
                   </button>
                   <button
                     onClick={() => handleGoogleRoleSelect("freelancer")}
