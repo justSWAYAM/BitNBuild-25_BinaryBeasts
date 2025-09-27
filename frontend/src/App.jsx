@@ -5,6 +5,7 @@ import GigCampusLanding from './Pages/landingPage'
 import ChatPage from './Pages/ChatPage'
 import Navigation from './Components/Navigation'
 import routes from './utils/routes'
+import StudentDashboard from './Pages/StudentDashboard'
 import './App.css'
 
 function App() {
@@ -29,6 +30,7 @@ function App() {
           
           {/* 404 fallback - redirects to landing */}
           <Route path="*" element={<GigCampusLanding />} />
+          <Route path="/StudentProfile" element={<StudentDashboard />} />
         </Routes>
         
         {/* Global Navigation Component */}
