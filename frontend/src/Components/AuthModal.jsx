@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { X, Eye, EyeOff } from "lucide-react";
-import { auth, db } from "../conifg/firebase";
+import { auth, db } from "../config/firebase";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { doc, setDoc, getDoc } from "firebase/firestore";
 

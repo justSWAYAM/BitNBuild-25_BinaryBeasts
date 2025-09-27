@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import routes from '../utils/routes';
 import { ChevronDown, Users, Shield, MessageCircle, Star, Code, Palette, PenTool, BookOpen, ArrowRight, Menu, X, CheckCircle, Zap, Globe, Play, Sparkles, TrendingUp, Target, Lightbulb, RotateCcw, Trophy, User, Clock, Award } from 'lucide-react';
 import AuthModal from '../Components/AuthModal';
 
@@ -111,8 +112,9 @@ const GigCampusLanding = () => {
                 
                 <div className="flex flex-col sm:flex-row gap-4">
                   <button 
+                  onClick={() => navigate(routes.MARKETPLACE)}
                     className="bg-emerald-500 hover:bg-emerald-600 px-8 py-4 rounded-xl font-semibold text-lg transition-colors text-white"
-                    onClick={() => openAuthModal('signup')}
+                    
                   >
                     Start Now
                   </button>
