@@ -4,7 +4,7 @@ export const routes = {
   HOME: '/',
   MARKETPLACE: '/marketplace',
   CHAT: '/chat/:partnerId?',
-  //DASHBOARD: '/dashboard',
+  DASHBOARD: '/dashboard',
   
   // Future routes - uncomment when needed
   // PROFILE: '/profile',

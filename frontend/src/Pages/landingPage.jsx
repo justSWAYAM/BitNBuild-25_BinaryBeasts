@@ -71,9 +71,6 @@ const GigCampusLanding = () => {
                 About
               </a>
               <div className="flex items-center space-x-4">
-                <button className="w-8 h-8 bg-slate-800 rounded-lg flex items-center justify-center hover:bg-slate-700 transition-colors">
-                  <div className="w-4 h-4 bg-slate-500 rounded-full"></div>
-                </button>
                 <button 
                   className="bg-white text-slate-900 px-4 py-2 rounded-lg font-medium hover:bg-gray-100 transition-colors"
                   onClick={() => openAuthModal('signin')}

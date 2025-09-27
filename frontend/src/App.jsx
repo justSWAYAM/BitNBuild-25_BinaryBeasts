@@ -22,6 +22,8 @@ function App() {
             
             {/* Marketplace/Job Listings */}
             <Route path={routes.MARKETPLACE} element={<JobListings />} />
+
+            <Route path="/dashboard" element={<StudentDashboard />} />
             
             {/* Chat Page - Now with Firebase integration */}
             <Route path="/chat" element={<ChatPage />} />
