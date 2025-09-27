@@ -13,10 +13,12 @@
     "@tailwindcss/vite": "^4.1.13",
     "firebase": "^12.3.0",
     "lucide-react": "^0.544.0",
+    "prop-types": "^15.8.1",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "react-firebase-hooks": "^5.1.1",
     "react-router-dom": "^7.9.3",
+    "recharts": "^3.2.1",
     "tailwindcss": "^4.1.13",
     "uuid": "^13.0.0"
   },

@@ -6,6 +6,7 @@ import GigCampusLanding from './Pages/landingPage'
 import ChatPage from './Pages/ChatPage'
 import ChatTestLinks from './Pages/ChatTestLinks'
 import FirebaseTest from './Pages/FirebaseTest'
+import ClientDashboard from './Components/ClientDashboard'
 import Navigation from './Components/Navigation'
 import routes from './utils/routes'
 import StudentDashboard from './Pages/StudentDashboard'
@@ -17,8 +18,7 @@ function App() {
       <Router>
         <div className="App">
           <Routes>
-            {/* Landing Page - Default route */}
-            <Route path={routes.HOME} element={<GigCampusLanding />} />
+            
             
             {/* Marketplace/Job Listings */}
             <Route path={routes.MARKETPLACE} element={<JobListings />} />
@@ -37,6 +37,10 @@ function App() {
             
             {/* Student Dashboard */}
             <Route path="/StudentProfile" element={<StudentDashboard />} />
+            
+            {/* Client Dashboard */}
+            <Route path="/ClientProfile" element={<ClientDashboard />} />
+            <Route path="/client-dashboard" element={<ClientDashboard />} />
             
             {/* Future routes can be added here */}
             {/* <Route path={routes.PROFILE} element={<UserProfile />} /> */}
