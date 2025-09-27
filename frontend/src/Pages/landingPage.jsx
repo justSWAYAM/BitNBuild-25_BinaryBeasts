@@ -41,6 +41,11 @@ const GigCampusLanding = () => {
     }
   ];
 
+  const openAuthModal = (mode) => {
+    setAuthMode(mode);
+    setShowAuthModal(true);
+  };
+
   return (
     <div className="min-h-screen bg-slate-950 text-white overflow-hidden">
       {/* Navigation */}
@@ -69,11 +74,8 @@ const GigCampusLanding = () => {
                   <div className="w-4 h-4 bg-slate-500 rounded-full"></div>
                 </button>
                 <button 
-                  onClick={() => {
-                    setAuthMode('signin');
-                    setShowAuthModal(true);
-                  }}
                   className="bg-white text-slate-900 px-4 py-2 rounded-lg font-medium hover:bg-gray-100 transition-colors"
+                  onClick={() => openAuthModal('signin')}
                 >
                   Sign In
                 </button>
@@ -109,11 +111,8 @@ const GigCampusLanding = () => {
                 
                 <div className="flex flex-col sm:flex-row gap-4">
                   <button 
-                    onClick={() => {
-                      setAuthMode('signup');
-                      setShowAuthModal(true);
-                    }}
                     className="bg-emerald-500 hover:bg-emerald-600 px-8 py-4 rounded-xl font-semibold text-lg transition-colors text-white"
+                    onClick={() => openAuthModal('signup')}
                   >
                     Start Now
                   </button>
@@ -121,11 +120,8 @@ const GigCampusLanding = () => {
                     Learn More
                   </button>
                   <button 
-                    onClick={() => {
-                      setAuthMode('signup');
-                      setShowAuthModal(true);
-                    }}
                     className="bg-slate-800 hover:bg-slate-700 px-8 py-4 rounded-xl font-semibold text-lg transition-colors text-white"
+                    onClick={() => openAuthModal('signup')}
                   >
                     Get Started
                   </button>
@@ -337,11 +333,8 @@ const GigCampusLanding = () => {
                 </p>
                 
                 <button 
-                  onClick={() => {
-                    setAuthMode('signup');
-                    setShowAuthModal(true);
-                  }}
                   className="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-4 px-8 rounded-xl text-lg transition-colors mb-6"
+                  onClick={() => openAuthModal('signup')}
                 >
                   Sign Up
                 </button>
