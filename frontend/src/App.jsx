@@ -8,7 +8,9 @@ function App() {
 
   return (
     <>
-      <div>
+    <div className='bg-amber-900 w-full h-full'>
+
+      <div className=''>
         <a href="https://vite.dev" target="_blank">
           <img src={viteLogo} className="logo" alt="Vite logo" />
         </a>
@@ -28,6 +30,8 @@ function App() {
       <p className="read-the-docs">
         Click on the Vite and React logos to learn more
       </p>
+    </div>
+
     </>
   )
 }
